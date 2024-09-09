@@ -12,7 +12,8 @@ data = data.rename(columns={'Hsf': 'standard_enthalpy_of_formation',
                      'ratio': 'polarization_ratio',
                      'e': 'pauling_electronegativity',
                      'esum': 'summation_of_electronegativity',
-                     'esumbyo': 'ratio_of_esum_to_Noxygen'})
+                     'esumbyo': 'ratio_of_esum_to_Noxygen',
+                     'enthalpy': 'enthalpy_of_formation_of_cation'})
 
 data_normalized = data.copy()
 
@@ -24,7 +25,7 @@ data_normalized['standard_enthalpy_of_formation'] = data_normalized['standard_en
 data_normalized['surfcharge'] = data_normalized['surfcharge'].map(lambda x: np.log(x+42.6))
 data_normalized['valence_band_energy'] = data_normalized['valence_band_energy'].map(lambda x: np.log(x+10.81))
 
-variables = ['coresize', 'hydrosize', 'Mulliken_electronegativity', 'enthalpy', 'polarization_ratio', 'pauling_electronegativity', 'summation_of_electronegativity', 'ratio_of_esum_to_Noxygen', 'MW', 'NMetal', 'NOxygen', 'ox']
+variables = ['coresize', 'hydrosize', 'Mulliken_electronegativity', 'enthalpy_of_formation_of_cation', 'polarization_ratio', 'pauling_electronegativity', 'summation_of_electronegativity', 'ratio_of_esum_to_Noxygen', 'MW', 'NMetal', 'NOxygen', 'ox']
 
 for var in variables:
     data_normalized[var] = data_normalized[var].map(lambda x: np.log(x))
@@ -33,7 +34,7 @@ independent_variables = data[['coresize', 'hydrosize', 'surfcharge',
                               'surfarea', 'standard_enthalpy_of_formation',
                               'conduction_band_energy', 'valence_band_energy',
                               'Mulliken_electronegativity', 'Expotime',
-                              'dosage', 'enthalpy', 'polarization_ratio',
+                              'dosage', 'enthalpy_of_formation_of_cation', 'polarization_ratio',
                               'pauling_electronegativity',
                               'summation_of_electronegativity',
                               'ratio_of_esum_to_Noxygen', 'MW',
@@ -43,7 +44,7 @@ independent_variables_normalized = data_normalized[['coresize', 'hydrosize', 'su
                                                     'surfarea', 'standard_enthalpy_of_formation',
                                                     'conduction_band_energy', 'valence_band_energy',
                                                     'Mulliken_electronegativity', 'Expotime',
-                                                    'dosage', 'enthalpy', 'polarization_ratio',
+                                                    'dosage', 'enthalpy_of_formation_of_cation', 'polarization_ratio',
                                                     'pauling_electronegativity',
                                                     'summation_of_electronegativity',
                                                     'ratio_of_esum_to_Noxygen', 'MW',
