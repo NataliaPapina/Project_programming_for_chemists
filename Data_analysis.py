@@ -1,22 +1,22 @@
-import plotly.express as px
-from preprocessing import data
-from Multicollinearity_test import data_normalized, df_independent_variables
-import plotly.graph_objects as go
+from preprocessing import data, data_normalized, df_independent_variables
+import pandas as pd
+from OUTLIERS import smirnov_grubbs as grubbs
+from corr_test import test_corr
+from visualization import box_plot
+from visualization import heatmap
 
-fig0 = px.bar(data, x="class", )
-fig0.show()
+indexes = set(df_independent_variables.index)
+print(df_independent_variables.drop(['Cellline', 'Celltype'], axis=1).columns)
 
-fig = px.imshow(df_independent_variables.corr(),title='Сorrelation heatmap')
-fig.show()
+for i in df_independent_variables.drop(['Cellline', 'Celltype', 'total_electrons'], axis=1).columns:
+    indexes = indexes & set(grubbs.test(df_independent_variables[i], alpha=0.05).index)
 
-fig2 = go.Figure()
-for i in data_normalized.columns:
-    fig2.add_trace(go.Box(y=data[i], name=i))
-fig2.update_layout(title_text='Box plot before normalization', title_x=0.5)
-fig2.show()
+df_independent_variables = pd.DataFrame(df_independent_variables.loc[list(indexes)])
+data_normalized = pd.DataFrame(data_normalized.loc[list(indexes)])
+print(df_independent_variables.info())
 
-fig3 = go.Figure()
-for i in data_normalized.columns:
-    fig3.add_trace(go.Box(y=data_normalized[i], name=i))
-fig3.update_layout(title_text='Box plot after normalization', title_x=0.5)
-fig3.show()
+
+box_plot(data_normalized.drop(['NPs', 'Cellline', 'Celltype', 'class'], axis=1), 'after normalization')
+
+heatmap(df_independent_variables)
+test_corr(df_independent_variables)
