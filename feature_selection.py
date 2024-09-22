@@ -1,5 +1,4 @@
-from Data_analysis import data_normalized, df_independent_variables
-from corr_test import test_corr
+from preprocessing import data_normalized, df_independent_variables
 from visualization import box_plot, heatmap
 
 drop = ['enthalpy_of_formation_of_cation', 'polarization_ratio', 'ratio_of_esum_to_Noxygen',
@@ -14,7 +13,6 @@ drop = ['enthalpy_of_formation_of_cation', 'polarization_ratio', 'ratio_of_esum_
 data_normalized = data_normalized.drop(drop, axis=1)
 df_independent_variables = df_independent_variables.drop(drop, axis=1)
 
-test_corr(df_independent_variables)
 
 box_plot(data_normalized.drop(['NPs'], axis=1), 'after drop')
-print(data_normalized.info())
+heatmap(df_independent_variables.drop(['Cellline', 'Celltype'], axis=1), text=True)
