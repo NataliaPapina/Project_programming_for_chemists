@@ -1,6 +1,11 @@
 import plotly.express as px
 import plotly.graph_objects as go
-from preprocessing import data, data_normalized
+from sklearn.metrics import auc
+
+
+def hist(df, column):
+    fig = px.histogram(df, x=column)
+    fig.show()
 
 
 def bar(df, column):
@@ -8,8 +13,8 @@ def bar(df, column):
     fig.show()
 
 
-def heatmap(df):
-    fig = px.imshow(df.corr(), title='Correlation heatmap')
+def heatmap(df, text=False):
+    fig = px.imshow(df.corr(method='spearman', numeric_only=True), title='Correlation heatmap', text_auto=text)
     fig.show()
 
 
@@ -26,8 +31,18 @@ def one_box_plot(df, name):
     fig.show()
 
 
-for i in data.drop(['viability'], axis=1).columns:
-    if data[i].dtype == 'float64' or data[i].dtype == 'int64':
-        one_box_plot(data, i)
+def roc_(fpr, tpr):
+    fig = px.area(
+        x=fpr, y=tpr,
+        title=f'ROC Curve (AUC={auc(fpr, tpr):.4f})',
+        labels=dict(x='False Positive Rate', y='True Positive Rate'),
+        width=800, height=800
+    )
+    fig.add_shape(
+        type='line', line=dict(dash='dash'),
+        x0=0, x1=1, y0=0, y1=1
+    )
 
-box_plot(data_normalized.drop(['NPs', 'Cellline', 'Celltype', 'class'], axis=1), 'before normalization')
+    fig.update_yaxes(scaleanchor="x", scaleratio=1)
+    fig.update_xaxes(constrain='domain')
+    fig.show()
