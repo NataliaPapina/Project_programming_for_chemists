@@ -1,11 +1,12 @@
 import pandas as pd
 from functions import encode
 import pymatgen.core as pmg
+from visualization import box_plot, hist
 
 data = pd.read_csv("nanotox_dataset.tsv", sep="\t", header='infer')
 
 missing_values = data.isnull().sum()
-print(f"Missing values in the data: {missing_values}")
+print(f"Missing values in the data:\n{missing_values}")
 
 print(f"Duplicates: {data.duplicated().sum()}")
 data = data.drop_duplicates(keep='first')
@@ -19,6 +20,11 @@ data = data.rename(columns={'Hsf': 'standard_enthalpy_of_formation',
                      'esum': 'summation_of_electronegativity',
                      'esumbyo': 'ratio_of_esum_to_Noxygen',
                      'enthalpy': 'enthalpy_of_formation_of_cation'})
+
+box_plot(data.drop(['NPs', 'class', 'Cellline', 'Celltype'], axis=1), 'Data')
+
+for col in data.drop(['NPs', 'class', 'Cellline', 'Celltype'], axis=1):
+    hist(data, col)
 
 data['average_electroneg'] = data['NPs'].apply(lambda x: pmg.Composition(x).average_electroneg)
 data['num_atoms'] = data['NPs'].apply(lambda x: pmg.Composition(x).num_atoms)
@@ -40,7 +46,7 @@ data['coefficient_of_linear_thermal_expansion'] = data['NPs'].apply(lambda x: pm
 data['density_of_solid'] = data['NPs'].apply(lambda x: pmg.Composition(x).elements[0].density_of_solid)
 data['liquid_range'] = data['NPs'].apply(lambda x: pmg.Composition(x).elements[0].liquid_range)
 data['melting_point'] = data['NPs'].apply(lambda x: pmg.Composition(x).elements[0].melting_point)
-
+print(data.columns)
 data_normalized = data.copy()
 
 data_normalized['viability'] = data_normalized['viability'].map(lambda x: x if x >= 0 else 0)
