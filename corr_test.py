@@ -1,5 +1,6 @@
-from preprocessing import data, data_normalized, df_independent_variables
+from preprocessing import df_independent_variables
 from visualization import heatmap
+
 
 def test_corr(df):
     cor = df.corr(method='spearman', numeric_only=True)
