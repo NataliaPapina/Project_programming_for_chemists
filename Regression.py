@@ -1,32 +1,15 @@
-from sklearn.model_selection import train_test_split
-from normalization import df_independent_variables, data_normalized
-from lazypredict.Supervised import LazyRegressor
-from sklearn.ensemble import GradientBoostingRegressor, AdaBoostRegressor, ExtraTreesRegressor
-from sklearn.neural_network import MLPRegressor
+from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.metrics import r2_score
-import plotly.express as px
-import plotly.graph_objects as go
+from train_val_test import x, y_viability, split
 
 
-def LazyReg(X_train, X_test, y_train, y_test):
-    reg = LazyRegressor(verbose=0, ignore_warnings=True, custom_metric=None)
-    models, predictions = reg.fit(X_train, X_test, y_train, y_test)
-    return models[models['R-Squared'] == max(models['R-Squared'])].index[0]
-
-
-models = {'GradientBoostingRegressor': GradientBoostingRegressor, 'AdaBoostRegressor': AdaBoostRegressor,
-          'ExtraTreesRegressor': ExtraTreesRegressor, 'MLPRegressor': MLPRegressor}
-
-x = df_independent_variables
-y_viability = data_normalized['viability']
-y_class = data_normalized['class']
-X_train, X_test, y_train, y_test = train_test_split(x, y_viability, test_size=0.2, random_state=42)
-
-
-def model(x, y, name, n):
-    X_train, X_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=42)
-    MODEL = models[LazyReg(X_train, X_test, y_train, y_test)](random_state=42, n_estimators=n)
+def model_reg(x, y, name, n):
+    X_train, X_val, X_test, y_train, y_val, y_test = split(x, y, 0.1, 0.1)
+    MODEL = GradientBoostingRegressor(random_state=42, n_estimators=n)
     MODEL.fit(X_train, y_train)
+    y_val_pred = MODEL.predict(X_val)
+    r2_val = r2_score(y_val, y_val_pred)
+    print(f'R2 val {name}: {r2_val}')
     y_test_pred = MODEL.predict(X_test)
     r2_test = r2_score(y_test, y_test_pred)
     print(f'R2 test {name}: {r2_test}')
@@ -37,5 +20,4 @@ def model(x, y, name, n):
           sep="\n")
 
 
-model(x, y_viability, 'viability', 44)
-#model(x, y_class, 'class')
+model_reg(x, y_viability, 'viability', 49)
