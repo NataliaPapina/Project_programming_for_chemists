@@ -12,6 +12,7 @@ def test_corr(df):
                 high_corr[cor.columns[i]] = high_corr.get(cor.columns[i], list()) + (
                 [cor.loc[cor.columns[i], cor.columns[j]], cor.columns[j]])
     print(*sorted([(len(value) // 2, key, value) for key, value in high_corr.items()]), sep='\n')
+    return high_corr
 
 
 corr_heatmap(df_independent_variables.drop(['Cellline', 'Celltype'], axis=1))
