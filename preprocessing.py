@@ -46,7 +46,7 @@ data['coefficient_of_linear_thermal_expansion'] = data['NPs'].apply(lambda x: pm
 data['density_of_solid'] = data['NPs'].apply(lambda x: pmg.Composition(x).elements[0].density_of_solid)
 data['liquid_range'] = data['NPs'].apply(lambda x: pmg.Composition(x).elements[0].liquid_range)
 data['melting_point'] = data['NPs'].apply(lambda x: pmg.Composition(x).elements[0].melting_point)
-print(data.columns)
+
 data_normalized = data.copy()
 
 data_normalized['viability'] = data_normalized['viability'].map(lambda x: x if x >= 0 else 0)
