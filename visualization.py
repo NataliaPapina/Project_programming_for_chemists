@@ -46,3 +46,10 @@ def roc_(fpr, tpr):
     fig.update_yaxes(scaleanchor="x", scaleratio=1)
     fig.update_xaxes(constrain='domain')
     fig.show()
+
+
+def scatter(x, y, yaxes='test', xaxes='test_pred'):
+    fig = px.scatter(x=x, y=y)
+    fig.update_yaxes(title_text=yaxes)
+    fig.update_xaxes(title_text=xaxes)
+    fig.show()
