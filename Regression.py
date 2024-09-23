@@ -1,7 +1,7 @@
 from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.metrics import r2_score, root_mean_squared_error
 from train_val_test import x, y_viability, split
-from visualization import one_box_plot
+from visualization import one_box_plot, scatter
 from preprocessing import data
 
 
@@ -17,6 +17,7 @@ def model_reg(x, y, name, n):
     y_test_pred = MODEL.predict(X_test)
     r2_test = r2_score(y_test, y_test_pred)
     RMSE_test = root_mean_squared_error(y_test, y_test_pred)
+    scatter(y_test, y_test_pred)
     print(f'R2 test {name}: {r2_test}')
     print(f'RMSE test {name}: {RMSE_test}')
     y_train_pred = MODEL.predict(X_train)
