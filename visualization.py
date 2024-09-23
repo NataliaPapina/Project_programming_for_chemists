@@ -13,7 +13,7 @@ def bar(df, column):
     fig.show()
 
 
-def heatmap(df, text=False):
+def corr_heatmap(df, text=False):
     fig = px.imshow(df.corr(method='spearman', numeric_only=True), title='Correlation heatmap', text_auto=text)
     fig.show()
 
