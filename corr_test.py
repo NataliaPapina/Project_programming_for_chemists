@@ -1,5 +1,5 @@
 from preprocessing import df_independent_variables
-from visualization import heatmap
+from visualization import corr_heatmap
 
 
 def test_corr(df):
@@ -14,5 +14,5 @@ def test_corr(df):
     print(*sorted([(len(value) // 2, key, value) for key, value in high_corr.items()]), sep='\n')
 
 
-heatmap(df_independent_variables.drop(['Cellline', 'Celltype'], axis=1))
+corr_heatmap(df_independent_variables.drop(['Cellline', 'Celltype'], axis=1))
 test_corr(df_independent_variables)
