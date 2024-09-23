@@ -10,7 +10,4 @@ data_normalized[data_normalized.drop(['NPs', 'Celltype', 'class'], axis=1).colum
                         columns=data_normalized.drop(['NPs', 'Celltype', 'class'], axis=1).columns))
 
 df_independent_variables = pd.DataFrame(data_normalized.drop(['NPs', 'class', 'viability'], axis=1))
-data_normalized = data_normalized.dropna()
-df_independent_variables = df_independent_variables.dropna()
 box_plot(data_normalized.drop(['NPs', 'Cellline', 'Celltype', 'class'], axis=1), 'after normalization')
-print(data_normalized.info())
