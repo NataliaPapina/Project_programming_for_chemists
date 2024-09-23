@@ -17,3 +17,6 @@ def LazyCla(x, y):
     reg = LazyClassifier(verbose=0, ignore_warnings=True, custom_metric=None, random_state=42)
     models, predictions = reg.fit(X_train, X_test, y_train, y_test)
     return models
+
+print(LazyReg(x, y_viability))
+print(LazyCla(x, y_class))
